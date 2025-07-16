@@ -6,6 +6,7 @@ import com.gialong.backend.dto.UserDTO;
 import com.gialong.backend.exception.AppException;
 import com.gialong.backend.service.JwtService;
 import com.gialong.backend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,19 +27,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
-    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService, PasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody CredentilsDTO credentilsDTO) {
@@ -56,6 +52,7 @@ public class AuthController {
             Map<String, String> map = new HashMap<>();
             map.put("token", jwtToken);
             return ResponseEntity.ok(map);
+
         } catch (BadCredentialsException | InternalAuthenticationServiceException e) {
             e.printStackTrace();
             throw new AppException(HttpStatus.FORBIDDEN, "Incorrect email or password", e);
@@ -74,7 +71,7 @@ public class AuthController {
         if(!userDTO.getPassword().isBlank()) {
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
-        userDTO.setRoleId(1); // 1 is USER
+//        userDTO.setRoleId(1); // 1 is USER
         try {
             UUID id = userService.create(userDTO);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

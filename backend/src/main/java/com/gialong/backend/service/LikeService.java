@@ -1,6 +1,5 @@
 package com.gialong.backend.service;
 
-
 import com.gialong.backend.dto.LikeDTO;
 import com.gialong.backend.model.Like;
 import com.gialong.backend.model.User;
@@ -8,22 +7,21 @@ import com.gialong.backend.repository.LikeRepository;
 import com.gialong.backend.repository.PostRepository;
 import com.gialong.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
-    public LikeService(LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository) {
-        this.likeRepository = likeRepository;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-    }
 
     // CRUD
     public Long countLikes(UUID postId) {
@@ -39,12 +37,12 @@ public class LikeService {
         }
 
         String email = authentication.getName();
-        final User user = userRepository.findByEmail(email).get();
+        final Optional<User> optionalUser = userRepository.findByEmail(email);
         // User is logged in but not found with email
-        if(user == null) return null;
+        if(optionalUser.isEmpty()) return null;
+        User user = optionalUser.get();
 
-        Boolean isLiked = likeRepository.existsByUserIdAndPostId(user.getId(), postId);
-        return isLiked;
+        return likeRepository.existsByUserIdAndPostId(user.getId(), postId);
     }
 
     public LikeDTO toggleLike(UUID postId) {
@@ -56,9 +54,10 @@ public class LikeService {
         }
 
         String email = authentication.getName();
-        final User user = userRepository.findByEmail(email).get();
+        final Optional<User> optionalUser = userRepository.findByEmail(email);
         // User is logged in but not found with email
-        if(user == null) return null;
+        if(optionalUser.isEmpty()) return null;
+        User user = optionalUser.get();
 
         Optional<Like> like = likeRepository.findByUserIdAndPostId(user.getId(), postId);
         LikeDTO likeDTO = new LikeDTO();
@@ -78,12 +77,11 @@ public class LikeService {
     }
 
     // MAPPER
-    private LikeDTO mapToDTO(Like like, LikeDTO likeDTO) {
+    private void mapToDTO(Like like, LikeDTO likeDTO) {
         likeDTO.setId(like.getId());
         likeDTO.setUserId(like.getUser().getId());
         likeDTO.setPostId(like.getPost().getId());
         likeDTO.setCreatedDate(like.getCreatedDate());
-        return likeDTO;
     }
 
     private Like mapToEntity(LikeDTO likeDTO, Like like) {

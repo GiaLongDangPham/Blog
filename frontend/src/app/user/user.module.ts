@@ -1,15 +1,39 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
+import { FeedComponent } from './component/feed/feed.component';
+import { RouterModule, Routes } from '@angular/router';
+import { PostDetailsComponent } from '../shared/component/post-details/post-details.component';
+import { SharedModule } from '../shared/shared.module';
+import { PrimengModule } from '../primeng/primeng.module';
+import { FormsModule } from '@angular/forms';
 
-
+const routes: Routes = [
+  {
+    path: '',
+    component: FeedComponent
+  },
+  {
+    path: 'posts', children: [
+      {
+        path: ':postId',
+        component: PostDetailsComponent
+      }
+    ]
+  }
+];
 
 @NgModule({
   declarations: [
-    UserComponent
+    UserComponent,
+    FeedComponent
   ],
   imports: [
-    CommonModule
+    SharedModule,
+    CommonModule,
+    PrimengModule,
+    FormsModule,
+    RouterModule.forChild(routes)
   ]
 })
 export class UserModule { }

@@ -12,8 +12,10 @@ import java.time.LocalDateTime;
 @Setter
 public class RestErrorDTO {
     private HttpStatus status;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime timestamp;
+
     private String message;
 
     public RestErrorDTO() {

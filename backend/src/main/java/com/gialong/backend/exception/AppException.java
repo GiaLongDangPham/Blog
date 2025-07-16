@@ -1,6 +1,5 @@
 package com.gialong.backend.exception;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 public class AppException extends RuntimeException {
     private HttpStatus status;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/yyyy")
     private LocalDateTime timestamp;
+
     private String message;
 
     public AppException() {

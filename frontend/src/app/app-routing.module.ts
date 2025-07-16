@@ -2,18 +2,41 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
 import { StaffComponent } from './staff/staff.component';
+import { LoginComponent } from './shared/component/login/login.component';
+import { SignupComponent } from './shared/component/signup/signup.component';
+import { NotFoundComponent } from './shared/component/not-found/not-found.component';
+import { authGuard } from './core/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserComponent, 
-    loadChildren: () => import("./user/user.module").then(m => m.UserModule)
+    component: UserComponent,
+    title: 'PostShare',
+    loadChildren: () => 
+      import('./user/user.module').then(m => m.UserModule)
   },
-
   {
     path: 'staff',
-    component: StaffComponent, 
-    loadChildren: () => import("./staff/staff.module").then(m => m.StaffModule)
+    component: StaffComponent,
+    title: 'Management | PostShare',
+    canActivate: [authGuard],
+    loadChildren: () => 
+      import('./staff/staff.module').then(m => m.StaffModule)
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Login | PostShare'
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+    title: 'Signup | PostShare'
+  },
+  {
+    path: '404',
+    component: NotFoundComponent,
+    title: '404 | PostShare'
   }
 ];
 
