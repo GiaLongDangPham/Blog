@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/Post_Share?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://root:iUmNRwZSBVQZTdvsfaglZzyWjSLGrtaE@hopper.proxy.rlwy.net:24208/railway
     username: root
-    password: root
+    password: iUmNRwZSBVQZTdvsfaglZzyWjSLGrtaE
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
