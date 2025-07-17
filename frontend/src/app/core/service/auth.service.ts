@@ -24,7 +24,13 @@ export class AuthService {
     return this.http.post<any>(`${this.apiURL}/login`, credentials);
   }
 
-  signup(credentials: {email: any, password: any, fullname: any}): Observable<any> {
+  signup(credentials: {
+    email: string;
+    password: string;
+    fullname: string;
+    roleId: number;
+  }): Observable<any> {
+    debugger
     return this.http.post<any>(`${this.apiURL}/signup`, credentials);
   }
 

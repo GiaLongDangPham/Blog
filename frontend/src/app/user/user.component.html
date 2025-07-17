@@ -3,7 +3,12 @@
     <img [routerLink]="['/']" style="width: 64px;" src="https://angular.io/assets/images/logos/angular/angular.svg" alt="">
     <div *ngIf="currentUsername"
       class="flex align-items-center gap-2">
-      <p [routerLink]="['./staff']" class="cursor-pointer">{{currentUsername}}</p>
+      <a
+        [routerLink]="['./staff']"
+        class="cursor-pointer text-primary hover:underline font-semibold transition"
+      >
+        {{ currentUsername }}
+      </a>
       <p-button (click)="logout()" label="Logout"></p-button>
     </div>
     <div *ngIf="!currentUsername">

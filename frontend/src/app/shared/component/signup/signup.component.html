@@ -17,6 +17,20 @@
   </div>
 
   <div class="flex flex-column gap-2 mt-4">
+    <label>Role</label>
+    <p-dropdown 
+      formControlName="roleId"
+      [options]="roles"
+      optionLabel="label"
+      optionValue="value"
+      [style]="{ width: '100%' }">
+    </p-dropdown>
+    <div class="text-red-500" *ngIf="signupForm.get('roleId')?.invalid && (signupForm.get('roleId')?.dirty || signupForm.get('roleId')?.touched)">
+      <small *ngIf="signupForm.get('roleId')?.errors?.['required']">Role is required</small>
+    </div>
+  </div>
+
+  <div class="flex flex-column gap-2 mt-4">
       <label>Password</label>
       <p-password formControlName="password" [feedback]="false" [style]="{'width': '100%'}" [inputStyle]="{'width': '100%'}" />
       <div class="text-red-500" *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">

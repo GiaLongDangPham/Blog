@@ -12,6 +12,11 @@ export class SignupComponent {
 
   message: string = '';
   signupForm!: FormGroup;
+  roles = [
+    { label: 'User', value: 1 },
+    { label: 'Admin', value: 2 },
+    { label: 'Staff', value: 3 }
+  ];
 
   constructor(
     private authService: AuthService,
@@ -26,17 +31,18 @@ export class SignupComponent {
     })
 
     this.signupForm = this.formBuilder.group({
-      email: ['', [
+      email: ['user3@gmail.com', [
         Validators.required,
         Validators.email
       ]],
-      fullname: ['', []],
-      password: ['', [
+      fullname: ['Nguyen Van User3', []],
+      password: ['123', [
         Validators.required
       ]],
-      passwordConfirm: ['', [
+      passwordConfirm: ['123', [
         Validators.required
       ]],
+      roleId: [1, Validators.required] // mặc định là User
     }, {
       validators: this.PasswordMatchValidator('password', 'passwordConfirm')
     } as AbstractControlOptions)

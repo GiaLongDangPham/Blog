@@ -3,7 +3,7 @@
   <small ngClass="{{type === 'success' ? 'text-green-500' : 'text-red-500'}}">{{message}}</small>
   <div class="flex flex-column gap-2 my-4">
     <label for="email">Email</label>
-    <input pInputText id="email" [(ngModel)]="login.email">
+    <input (keydown.enter)="onLogin()"  pInputText id="email" [(ngModel)]="login.email">
   </div>
   <div class="flex flex-column gap-2 mb-4">
       <label for="password">Password</label>
